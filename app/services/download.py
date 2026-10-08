@@ -1,13 +1,13 @@
-# 视频下载功能
+# 音频下载功能（仅下载音轨，无需 ffmpeg 合并）
 import subprocess
 from app.config import COOKIES_PATH, DOWNLOAD_DIR
 
-# 获取函数参数：视频链接，视频文件名（可选，默认为 "video"）
+
 def download_video(url: str, filename: str = "video"):
+    """仅下载音轨，用于语音转录。不下载视频流，速度更快且容器无需 ffmpeg。"""
     if not COOKIES_PATH or not DOWNLOAD_DIR:
         raise RuntimeError("COOKIES_PATH 和 DOWNLOAD_DIR 必须在环境变量中配置")
 
-    # 执行yt-dlp命令，把视频下载到服务器的指定文件夹下（生产环境下）/下载到本地（开发环境下）
     try:
         subprocess.run(
             [
@@ -16,9 +16,7 @@ def download_video(url: str, filename: str = "video"):
                 COOKIES_PATH,
                 "--no-playlist",
                 "--format",
-                "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
-                "--merge-output-format",
-                "mp4",
+                "bestaudio/best",
                 "-P",
                 DOWNLOAD_DIR,
                 "-o",
