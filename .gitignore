@@ -3,3 +3,4 @@ venv/
 .env
 cookies.txt
 temp/
+models/
