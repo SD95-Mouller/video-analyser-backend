@@ -24,25 +24,26 @@ def _pick_best_media_file(filename: str) -> Path:
 		if path.is_file() and path.name.startswith(f"{filename}.")
 	)
 	if not matches:
-		raise FileNotFoundError(f"在 {TEMP_DIR} 中找不到视频文件：{filename}")
+		raise FileNotFoundError(f"在 {TEMP_DIR} 中找不到音频文件：{filename}")
 
+	# 下载只取音轨，优先选择音频文件；视频格式仅作兜底（如 bestaudio 回退到含音轨的合并格式）
 	priority = {
-		".mp4": 0,
-		".m4v": 1,
-		".mov": 2,
-		".mkv": 3,
-		".webm": 4,
-		".avi": 5,
-		".m4a": 6,
-		".aac": 7,
-		".mp3": 8,
-		".wav": 9,
-		".flac": 10,
-		".ogg": 11,
-		".opus": 12,
+		".m4a": 0,
+		".aac": 1,
+		".mp3": 2,
+		".wav": 3,
+		".flac": 4,
+		".ogg": 5,
+		".opus": 6,
+		".mp4": 7,
+		".m4v": 8,
+		".mov": 9,
+		".mkv": 10,
+		".webm": 11,
+		".avi": 12,
 	}
 
-	for required in (VIDEO_EXTENSIONS, AUDIO_EXTENSIONS):
+	for required in (AUDIO_EXTENSIONS, VIDEO_EXTENSIONS):
 		preferred = [
 			path for path in matches if path.suffix.lower() in required
 		]

@@ -25,7 +25,7 @@ def test_analyze_returns_200(monkeypatch):
     assert "summary" in response.json()["data"]
 
 
-def test_transcribe_prefers_video_file_over_m4a(monkeypatch, tmp_path):
+def test_transcribe_prefers_audio_file_over_video(monkeypatch, tmp_path):
     filename = "video_test"
     video_path = tmp_path / f"{filename}.mp4"
     audio_path = tmp_path / f"{filename}.m4a"
@@ -36,7 +36,7 @@ def test_transcribe_prefers_video_file_over_m4a(monkeypatch, tmp_path):
 
     class FakeModel:
         def transcribe(self, path):
-            assert Path(path).suffix.lower() == ".mp4"
+            assert Path(path).suffix.lower() == ".m4a"
             return ([type("Segment", (), {"text": "hello"})()], None)
 
     monkeypatch.setattr("app.services.transform._get_model", lambda: FakeModel())
