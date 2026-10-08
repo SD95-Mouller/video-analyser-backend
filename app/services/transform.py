@@ -1,3 +1,4 @@
+import os
 from functools import lru_cache
 from pathlib import Path
 
@@ -11,7 +12,10 @@ AUDIO_EXTENSIONS = {".m4a", ".aac", ".mp3", ".wav", ".flac", ".ogg", ".opus"}
 
 @lru_cache(maxsize=1)
 def _get_model() -> WhisperModel:
-	return WhisperModel("base", device="cpu", compute_type="int8")
+	model_path = os.getenv("WHISPER_MODEL_PATH", "/app/models/faster-whisper-base")
+	if not Path(model_path).exists():
+		model_path = "base"  # 回退到自动下载/本地缓存
+	return WhisperModel(model_path, device="cpu", compute_type="int8")
 
 
 def _pick_best_media_file(filename: str) -> Path:
