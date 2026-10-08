@@ -2,17 +2,20 @@ FROM python:3.13-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
 	PYTHONUNBUFFERED=1 \
-	COOKIES_PATH=/run/secrets/cookies.txt \
-	DOWNLOAD_DIR=/app/temp
-# cookies.txt 是敏感文件，包含用于身份验证下载的 cookie。
-# 它应该在 docker run 时挂载。
+	COOKIES_PATH=/app/temp/cookies.txt \
+	DOWNLOAD_DIR=/app/temp \
+	HF_HUB_OFFLINE=1
 
 WORKDIR /app
+
+RUN apt-get update 
 
 COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt yt-dlp
 
 COPY app ./app
+COPY models /app/models
+COPY cookies.txt /app/temp/cookies.txt
 RUN mkdir -p /app/temp \
 	&& useradd --create-home --shell /usr/sbin/nologin app \
 	&& chown -R app:app /app
