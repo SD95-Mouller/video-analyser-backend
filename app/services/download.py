@@ -24,6 +24,8 @@ def download_video(url: str, filename: str = "video"):
                 url,
             ],
             check=True,
+            encoding="utf-8",       # 新增：明确用 utf-8
+            errors="replace",       # 新增：遇到无法解码的字符就替换，不抛错
             capture_output=True,
             text=True,
         )
