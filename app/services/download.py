@@ -14,6 +14,7 @@ def download_video(url: str, filename: str = "video"):
                 "yt-dlp",
                 "--cookies",
                 COOKIES_PATH,
+                "--no-save-cookies",
                 "--no-playlist",
                 "--format",
                 "bestaudio/best",
