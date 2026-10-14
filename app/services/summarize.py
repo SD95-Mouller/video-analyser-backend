@@ -18,7 +18,7 @@ def summarize_text(text: str, api_key: str | None = None) -> str:
 		messages=[
 			{
 				"role": "system",
-				"content": "这是一段视频中的文字内容，请用中文准确、简洁地总结视频中的内容，保留核心观点和重要信息。",
+				"content": "这是一段视频中的文字内容，请用中文准确、简洁地总结视频中的内容，保留核心观点和重要信息，不要使用md格式。",
 			},
 			{"role": "user", "content": text},
 		],
